@@ -4,12 +4,12 @@
 
 This emulator was originally designed as a learning experience while enrolled in CSC 364 (Computer Architecture) at Louisiana Tech university. In the class, we learned the basics of digital circuitry and started from designing simple circuits (like the full adder) to a fully functional 16 bit micro-processor with a clock, ALU, ROM, and RAM.
 
-In addition to desigining digital circuits, we learned the basics of assembly by building an assembly language based on the design of our micro-processor. That's where this project was born. In an effort to more easily practice coding our new assembly language and understand the design of the micro-processor better, I created this emulator, which I have creatively named "csc34emu".
+In addition to desigining digital circuits, we learned the basics of assembly by building an assembly language based on the design of our micro-processor. That's where this project was born. In an effort to more easily practice coding our new assembly language and understand the design of the micro-processor better, I created this emulator, which I have creatively named "csc364emu".
 
 ---
 ## Emulator Specs 
 
-The csc364emu micro-processor is a 16 bit processor, meaning each instruction is comprised of 2 bytes (16 bits). It has 16 registers, each (2 bytes) in size, including 4 special registers which will be further detailed later in this document. The csc364emu micro-processor has 131,070 bytes of ROM (stores 65,565 instructions) which is accessible from memory addresses 0-65,564 inclusive. The ROM memory address 65,535 or 0xFF is reserved to signal that csc364emu should halt. The csc364emu micro-processor has 65,536 bytes of RAM which are accessible from memory addresses 0-65,535 inclusive. Finally, csc364emu has a primitive 16x8 screen for displaying information.
+The csc364emu micro-processor is a 16 bit processor, meaning each instruction is comprised of 2 bytes (16 bits). It has 16 registers, each (2 bytes) in size, including 4 special registers which will be further detailed later in this document. The csc364emu micro-processor has 131,070 bytes of ROM (stores 65,565 instructions) which is accessible from memory addresses 0-65,564 inclusive. The ROM memory address 65,535 or 0xFFFF is reserved to signal that csc364emu should halt. The csc364emu micro-processor has 65,536 bytes of RAM which are accessible from memory addresses 0-65,535 inclusive. Finally, csc364emu has a primitive 16x8 screen for displaying information.
 
 ---
 ## Instructions
