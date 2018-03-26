@@ -5,12 +5,13 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"ihex"
 	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/littlehawk93/ihex"
 )
 
 // RegisterMap - Lookup map for string register names to their binary code
