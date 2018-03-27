@@ -1,6 +1,6 @@
 # LA Tech CSC 364 Assembler
 
-*Last updated on 2018-03-20*
+*Last updated on 2018-03-26*
 
 This assembler was originally designed to help supplement writing assembly programs for the csc364emu emulator. Like all assemblers, this program takes in assembly source code as a plain text file and generates an executable binary that can be run by the csc364emu emulator.
 
