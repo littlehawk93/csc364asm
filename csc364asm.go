@@ -108,7 +108,8 @@ func main() {
 
 	defer file.Close()
 
-	var romFile ihex.I8HEX
+	var romFile ihex.HexFile
+	romFile.Type = ihex.HexFileTypeI8HEX
 
 	err = parseFile(file, &romFile)
 
@@ -122,14 +123,14 @@ func main() {
 		log.Fatalf("Error creating file '%s': %s", *outputFile, err.Error())
 	}
 
-	err = romFile.WriteFile(outFile)
+	_, err = romFile.WriteTo(outFile)
 
 	if err != nil {
 		log.Fatalf("Error writing file data: %s", err.Error())
 	}
 }
 
-func parseFile(src *os.File, dest *ihex.I8HEX) error {
+func parseFile(src *os.File, dest *ihex.HexFile) error {
 
 	scanner := bufio.NewScanner(src)
 
