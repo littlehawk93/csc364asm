@@ -5,6 +5,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -73,20 +74,18 @@ var InstructionMap = map[string]byte{
 
 func main() {
 
-	sourceFile := flag.String("f", "", "The source code file")
+	sourceFile := flag.String("f", "", "Optional. The source code file")
 	outputFile := flag.String("o", "", "Optional. The output ROM file")
 
 	flag.Parse()
 
-	if *sourceFile == "" {
-		log.Fatalln("No source file provided")
+	if *sourceFile != "" {
+		if _, err := os.Stat(*sourceFile); os.IsNotExist(err) {
+			log.Fatalln("Source file does not exist")
+		}
 	}
 
-	if _, err := os.Stat(*sourceFile); os.IsNotExist(err) {
-		log.Fatalln("Source file does not exist")
-	}
-
-	if *outputFile == "" {
+	if *outputFile == "" && *sourceFile != "" {
 		ext := filepath.Ext(*sourceFile)
 
 		var tmp string
@@ -100,37 +99,45 @@ func main() {
 		outputFile = &tmp
 	}
 
-	file, err := os.Open(*sourceFile)
+	if *outputFile != "" && *sourceFile != "" {
 
-	if err != nil {
-		log.Fatalf("Error opening file '%s': %s", *sourceFile, err.Error())
+		inFile, err := os.Open(*sourceFile)
+
+		if err != nil {
+			log.Fatalf("Error opening file '%s': %s", *sourceFile, err.Error())
+		}
+
+		outFile, err := os.Create(*outputFile)
+
+		if err != nil {
+			log.Fatalf("Error creating file '%s': %s", *outputFile, err.Error())
+		}
+
+		assemble(inFile, outFile)
+	} else {
+		assemble(os.Stdin, os.Stdout)
 	}
+}
 
-	defer file.Close()
+func assemble(in, out *os.File) {
 
 	var romFile ihex.HexFile
 	romFile.Type = ihex.HexFileTypeI8HEX
 
-	err = parseFile(file, &romFile)
+	err := parseFile(in, &romFile)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error reading file data: %s", err.Error())
 	}
 
-	outFile, err := os.Create(*outputFile)
-
-	if err != nil {
-		log.Fatalf("Error creating file '%s': %s", *outputFile, err.Error())
-	}
-
-	_, err = romFile.WriteTo(outFile)
+	_, err = romFile.WriteTo(out)
 
 	if err != nil {
 		log.Fatalf("Error writing file data: %s", err.Error())
 	}
 }
 
-func parseFile(src *os.File, dest *ihex.HexFile) error {
+func parseFile(src io.Reader, dest *ihex.HexFile) error {
 
 	scanner := bufio.NewScanner(src)
 
@@ -284,7 +291,7 @@ func parseValue(token string) (byte, error) {
 
 	if len(token) > 2 && token[0:2] == "0x" {
 
-		val, err = parseHex(token)
+		val, err = parseHex(token[2:])
 
 		if err != nil {
 			return val, fmt.Errorf("Unable to parse token '%s': %s", token, err.Error())
