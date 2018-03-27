@@ -16,4 +16,8 @@ The assembler will create the ROM file in the same directory with the same file 
 
     csc364asm -f /path/to/source.asm -o /output/file/path.hex
 
+If no input file is provided, the assembler will read from stdin and output the compiled code to stdout. You can redirect stdin and stdout to effectively read and write from / to files.
+
+    csc364asm < /path/to/source.asm > /output/file/path.hex
+
 The assembler will provide error messages with associated line numbers when an error is encountered. 
