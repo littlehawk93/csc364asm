@@ -135,7 +135,7 @@ func parseNumeric(token string) (byte, error) {
 func compressData(d []byte) []byte {
 
 	data := make([]byte, 2)
-	data[0] = ((d[0] & 0x0F) << 4) & (d[1] & 0x0F)
-	data[1] = ((d[2] & 0x0F) << 4) & (d[3] & 0x0F)
+	data[0] = (d[0] & 0xF0) | (d[1] & 0x0F)
+	data[1] = ((d[2] & 0x0F) << 4) | (d[3] & 0x0F)
 	return data
 }

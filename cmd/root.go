@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"encoding/hex"
 	"fmt"
 	"log"
 	"os"
@@ -36,7 +37,7 @@ func Execute() {
 // init sets the command line parameters used by this program
 func init() {
 
-	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	log.SetFlags(log.Ldate | log.Ltime)
 
 	rootCmd.Flags().StringVarP(&inputFilePath, "input", "i", "", "An input file to read assembly instructions from")
 	rootCmd.Flags().StringVarP(&inputFilePath, "output", "o", "", "An output file to write binary HEX instructions to")
@@ -91,6 +92,8 @@ func runRootCommand(cmd *cobra.Command, args []string) {
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
+
+		fmt.Fprintf(os.Stdout, "%s\n", hex.EncodeToString(d))
 
 		if _, err = buf.Write(d); err != nil {
 			log.Fatalf("Error writing buffer data: %s\n", err.Error())
