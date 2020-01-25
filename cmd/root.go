@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"bytes"
-	"encoding/hex"
 	"fmt"
 	"log"
 	"os"
@@ -92,8 +91,6 @@ func runRootCommand(cmd *cobra.Command, args []string) {
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
-
-		fmt.Fprintf(os.Stdout, "%s\n", hex.EncodeToString(d))
 
 		if _, err = buf.Write(d); err != nil {
 			log.Fatalf("Error writing buffer data: %s\n", err.Error())
